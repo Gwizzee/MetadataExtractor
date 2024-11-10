@@ -46,7 +46,7 @@ Usage:
    * Click the "Save Metadata" button to download the metadata.
 
 
-Libraries Used
+Libraries Used:
 
 * Client-side:
     * ExifJS (for image metadata)
@@ -54,7 +54,7 @@ Libraries Used
     * tika-server
     * 
 
-How it Works
+How it Works:
 
 1.  The user selects a file using the file input in the web app.
 2.  The web app sends the file to the Node.js server.
@@ -62,13 +62,13 @@ How it Works
 4.  The server sends the extracted metadata back to the web app as a JSON response.
 5.  The web app displays the metadata and allows the user to filter and save it.
 
-Notes
+Notes:
 
 * This setup requires both the client-side web app and the Node.js server to be running.
 * Ensure the server is running on the correct port (Port: 9998).
 * Consider adding error handling and security measures for production and lab environments.
 
-Contributing
+Contributing:
 
 Contributions are welcome! Feel free to:
 
