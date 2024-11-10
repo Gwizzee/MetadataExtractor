@@ -1,51 +1,85 @@
 # Metadata Extractor
 A web app that extracts metadata from various file types, including images, documents and spreadsheets.
 
-## Features:
+# Metadata Extractor Web App with Apache Tika
 
-Supported File Types:
+This web application extracts metadata from various file types using a combination of client-side JavaScript and a Node.js server with Apache Tika.
+
+## Features
+
+* **Supported File Types:**
     * JPEG, PNG, and other image formats (using ExifJS)
-    * DOCX (Microsoft Word)
-    * XLSX (Microsoft Excel)
-    * (More types can be added with additional libraries)
-    
-Metadata Display: Displays extracted metadata in a readable format.
+    * Wide range of document and other formats (using Apache Tika)
+* **Metadata Display:** Displays extracted metadata in a readable format.
+* **Metadata Filtering:** Filter metadata by key or value using the search bar.
+* **Save Metadata:** Download the displayed metadata as a text file.
 
-Metadata Filtering:Filter metadata by key or value using the search bar.
-Save Metadata: Download the displayed metadata as a text file.
+## Architecture
 
-Usage
+This application uses a client-server architecture:
 
-1. Open `index.html` in your web browser.
-2. Click the "Choose File" button and select a file.
-3. The extracted metadata will be displayed below.
-4. Use the search bar to filter the metadata.
-5. Click the "Save Metadata" button to download the metadata as a text file.
+* **Client-side:**  An HTML page (`index.html`) with JavaScript handles file selection, user interaction, and metadata display/filtering.
+* **Server-side:** A Node.js server with the `tika-server` package uses Apache Tika to extract metadata from files sent by the client.
 
-Libraries Used:
+## Prerequisites
 
-* ExifJS: Used for extracting metadata from image files. Included via CDN.
-* (Optional) Apache Tika: (Not included) Can be used for extracting metadata from a wider range of file types (DOCX, XLSX, PDF, etc.).
+* **Node.js and npm:** Make sure you have Node.js and npm installed.
+* **Tika Server:**
+    1.  Create a directory for the server (e.g., `tika-server`).
+    2.  Inside the directory, create a file named `server.js`.
+    3.  Install the `tika-server` package:
+        ```bash
+        npm install tika-server
+        ```
 
-How to Add More File Types
+## Usage
 
-1. Include the necessary library: Add the library to your project (e.g., Apache Tika).
-2. Modify the JavaScript code:Update the `reader.onload` function to include logic for extracting metadata from the new file type using the added library.
+1. **Start the Tika Server:**
+   * Navigate to the `tika-server` directory in your terminal.
+   * Run `node server.js` to start the server.
 
-Notes:
+2. **Open the Web App:**
+   * Open `index.html` in your web browser.
 
-* This is a basic implementation and can be further improved with more advanced features and support for a wider range of file types.
-* Error handling is included, but it can be enhanced for more specific error scenarios.
-* The filtering is case-insensitive and searches both keys and values.
+3. **Extract Metadata:**
+   * Click the "Choose File" button and select a file.
+   * The extracted metadata will be displayed.
 
-Contributing:
+4. **Filter and Save:**
+   * Use the search bar to filter the metadata.
+   * Click the "Save Metadata" button to download the metadata.
 
-Feel free to contribute to this project by:
 
-* Adding support for more file types.
-* Improving the user interface.
-* Enhancing the metadata analysis and filtering capabilities.
-* Fixing bugs and improving code quality.
+## Libraries Used
+
+* **Client-side:**
+    * ExifJS (for image metadata)
+* **Server-side:**
+    * tika-server (Node.js wrapper for Apache Tika)
+
+## How it Works
+
+1.  The user selects a file using the file input in the web app.
+2.  The web app sends the file to the Node.js server.
+3.  The server uses Apache Tika to extract metadata from the file.
+4.  The server sends the extracted metadata back to the web app as a JSON response.
+5.  The web app displays the metadata and allows the user to filter and save it.
+
+## Notes
+
+* This setup requires both the client-side web app and the Node.js server to be running.
+* Ensure the server is running on the correct port (as specified in the web app's JavaScript).
+* Consider adding error handling and security measures for production environments.
+
+## Contributing
+
+Contributions are welcome! Feel free to:
+
+* Add support for more file types or metadata fields.
+* Improve the user interface and user experience.
+* Enhance the metadata filtering and analysis capabilities.
+* Add more robust error handling and security features.
+
 
 License:
 
