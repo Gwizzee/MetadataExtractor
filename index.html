@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Metadata Extractor</title>
+<script src="https://cdn.jsdelivr.net/npm/exif-js"></script> </head>
+<body>
+  <h1>Metadata Extractor</h1>
+  <input type="file" id="fileInput">
+  <pre id="output"></pre>
+  <button id="saveButton">Save Metadata</button>
+  <input type="text" id="filterInput" placeholder="Filter metadata">
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const output = document.getElementById('output');
+    const saveButton = document.getElementById('saveButton');
+    const filterInput = document.getElementById('filterInput');
+
+    fileInput.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        try {
+          let metadata = {};
+          if (file.type.startsWith('image/')) { // For JPEG, etc.
+            EXIF.getData(file, function() {
+              metadata = EXIF.getAllTags(this);
+              displayMetadata(metadata);
+            });
+          } else {
+            // Here you would use a library like Apache Tika to extract 
+            // metadata from DOCX, XLSX, and other file types.
+            // For this example, I'll just simulate some metadata:
+            if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') { // DOCX
+              metadata = {
+                'Author': 'John Doe',
+                'Creation Date': '2024-11-09T12:00:00Z',
+                'Word Count': '1234'
+              };
+            } else if (file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') { // XLSX
+              metadata = {
+                'Author': 'Jane Smith',
+                'Last Modified': '2024-11-10T10:00:00Z',
+                'Sheet Count': '3'
+              };
+            }
+            displayMetadata(metadata);
+          }
+        } catch (error) {
+          output.textContent = "Error extracting metadata: " + error.message;
+        }
+      }
+      reader.readAsArrayBuffer(file); // For ExifJS (and potentially other libraries)
+    });
+
+    function displayMetadata(metadata) {
+      const filter = filterInput.value.toLowerCase();
+      const filteredMetadata = Object.entries(metadata)
+        .filter(([key, value]) => key.toLowerCase().includes(filter) || 
+                                 (value && value.toString().toLowerCase().includes(filter)));
+      const formattedOutput = filteredMetadata.map(([key, value]) => `${key}: ${value}`).join('\n');
+      output.textContent = formattedOutput;
+    }
+
+    saveButton.addEventListener('click', () => {
+      const metadataText = output.textContent;
+      const blob = new Blob([metadataText], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'metadata.txt';
+      link.click();
+    });
+
+    filterInput.addEventListener('input', () => {
+      const metadata = JSON.parse(output.textContent); // Assuming the output is JSON
+      displayMetadata(metadata);
+    });
+  </script>
+</body>
+</html>
